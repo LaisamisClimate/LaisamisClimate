@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laisamis Climate & Land Initiative</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --earth:    #1a1208;
+      --laterite: #8b3a1a;
+      --ochre:    #c47c2b;
+      --sand:     #e8d5a3;
+      --dust:     #f5ede0;
+      --sky:      #1c2b3a;
+      --mist:     #a8bfcc;
+      --white:    #faf8f4;
+      --accent:   #d4601a;
+
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans:  'Outfit', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--earth);
+      color: var(--dust);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── Nav ───────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: transparent;
+      transition: background 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(26, 18, 8, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(196, 124, 43, 0.15);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      color: var(--sand);
+      text-decoration: none;
+      line-height: 1.2;
+    }
+    .nav-logo span { display: block; font-size: 0.65rem; font-family: var(--sans); font-weight: 400; color: var(--ochre); letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--sand); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; opacity: 0.8; transition: opacity 0.2s; }
+    .nav-links a:hover { opacity: 1; color: var(--ochre); }
+
+    /* ─── Hero ──────────────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3rem 5rem;
+      overflow: hidden;
+    }
+
+    /* SVG landscape background */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(26,18,8,0.2) 0%,
+        rgba(26,18,8,0.1) 40%,
+        rgba(26,18,8,0.75) 75%,
+        rgba(26,18,8,1) 100%
+      );
+      z-index: 1;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      padding: 0.35rem 0.9rem;
+      border: 1px solid rgba(196,124,43,0.5);
+      border-radius: 2px;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 1.8rem;
+      max-width: 800px;
+    }
+    .hero h1 em { font-style: italic; color: var(--sand); }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: var(--sand);
+      max-width: 620px;
+      margin-bottom: 2.8rem;
+      font-weight: 400;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(232,213,163,0.2);
+    }
+    .stat-item {}
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      color: var(--ochre);
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mist);
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+      padding: 0.9rem 2.2rem;
+      border: none;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: #b85015; transform: translateY(-1px); }
+    .btn-secondary {
+      color: var(--sand);
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 1.5rem;
+      border: 1px solid rgba(232,213,163,0.3);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--ochre); color: var(--ochre); }
+
+    /* scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      right: 3rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--mist);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--ochre), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:0.4; transform:scaleY(0.7)} 50%{opacity:1; transform:scaleY(1)} }
+
+    /* ─── Section Base ───────────────────────────────────────────────── */
+    section { padding: 6rem 3rem; }
+    .section-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .section-body {
+      font-size: 1rem;
+      color: var(--sand);
+      max-width: 640px;
+      line-height: 1.8;
+    }
+
+    /* ─── What We Offer ─────────────────────────────────────────────── */
+    #offer { background: var(--earth); }
+    .offer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 4rem;
+      align-items: start;
+    }
+    .offer-left {}
+    .offer-right {}
+
+    .offer-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+    .offer-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(196,124,43,0.15);
+      padding: 1.5rem;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .offer-card:hover {
+      border-color: rgba(196,124,43,0.4);
+      background: rgba(196,124,43,0.04);
+    }
+    .offer-card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    .offer-card h3 {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .offer-card p {
+      font-size: 0.82rem;
+      color: var(--mist);
+      line-height: 1.7;
+    }
+
+    /* ─── Land ───────────────────────────────────────────────────────── */
+    #land { background: rgba(28,43,58,0.4); border-top: 1px solid rgba(168,191,204,0.1); border-bottom: 1px solid rgba(168,191,204,0.1); }
+    .land-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 5rem;
+      align-items: start;
+      margin-top: 3rem;
+    }
+
+    /* Simplified SVG map of the 6 wards */
+    .map-container {
+      position: relative;
+    }
+    .map-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mist);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .map-svg-wrap {
+      background: rgba(28,43,58,0.6);
+      border: 1px solid rgba(168,191,204,0.2);
+      padding: 1.5rem;
+    }
+
+    .zone-list { margin-top: 2.5rem; }
+    .zone-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid rgba(232,213,163,0.1);
+      align-items: flex-start;
+    }
+    .zone-item:last-child { border-bottom: none; }
+    .zone-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+    .zone-text h4 {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      color: var(--white);
+      margin-bottom: 0.2rem;
+    }
+    .zone-text p {
+      font-size: 0.8rem;
+      color: var(--mist);
+      line-height: 1.6;
+    }
+
+    /* ─── Why Partner ─────────────────────────────────────────────────── */
+    #why { background: var(--earth); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+    .why-card {
+      padding: 2rem;
+      border-top: 2px solid var(--laterite);
+      background: rgba(139,58,26,0.06);
+      transition: background 0.3s;
+    }
+    .why-card:hover { background: rgba(139,58,26,0.12); }
+    .why-num {
+      font-family: var(--serif);
+      font-size: 3rem;
+      color: rgba(196,124,43,0.25);
+      line-height: 1;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .why-card h3 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .why-card p {
+      font-size: 0.85rem;
+      color: var(--sand);
+      line-height: 1.75;
+    }
+
+    /* ─── Proof Point / Lake Turkana ─────────────────────────────────── */
+    .proof-band {
+      background: var(--laterite);
+      padding: 4rem 3rem;
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+    .proof-band blockquote {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      line-height: 1.4;
+      color: var(--white);
+      max-width: 700px;
+      flex: 1;
+      font-style: italic;
+    }
+    .proof-band cite {
+      display: block;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sand);
+      font-style: normal;
+      margin-top: 1.2rem;
+      opacity: 0.8;
+    }
+    .proof-stat {
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .proof-stat .big { font-family: var(--serif); font-size: 4rem; color: var(--white); line-height: 1; display: block; }
+    .proof-stat .small { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sand); margin-top: 0.4rem; display: block; opacity: 0.85; }
+
+    /* ─── Governance ─────────────────────────────────────────────────── */
+    #governance { background: rgba(26,18,8,0.95); }
+    .gov-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 5rem;
+      margin-top: 3rem;
+      align-items: start;
+    }
+    .gov-pillars { margin-top: 2rem; }
+    .gov-pillar {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      align-items: flex-start;
+    }
+    .pillar-line {
+      width: 2px;
+      background: var(--ochre);
+      flex-shrink: 0;
+      align-self: stretch;
+      min-height: 60px;
+    }
+    .pillar-body h4 {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .pillar-body p {
+      font-size: 0.83rem;
+      color: var(--mist);
+      line-height: 1.7;
+    }
+    .risk-note {
+      background: rgba(212,96,26,0.1);
+      border-left: 3px solid var(--accent);
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    .risk-note h4 {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .risk-note p {
+      font-size: 0.82rem;
+      color: var(--sand);
+      line-height: 1.7;
+    }
+
+    /* ─── Partners / Targets ──────────────────────────────────────────── */
+    #partners { background: var(--sky); }
+    .partner-categories {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+    .partner-cat h3 {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(196,124,43,0.3);
+    }
+    .partner-list { list-style: none; }
+    .partner-list li {
+      font-size: 0.85rem;
+      color: var(--sand);
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .partner-list li::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--ochre);
+      flex-shrink: 0;
+    }
+
+    /* ─── Contact ─────────────────────────────────────────────────────── */
+    #contact {
+      background: var(--earth);
+      text-align: center;
+      padding: 7rem 3rem;
+    }
+    #contact .section-title { margin-left: auto; margin-right: auto; }
+    #contact .section-body { margin: 0 auto 3rem; text-align: center; }
+    .contact-cards {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+    }
+    .contact-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(196,124,43,0.2);
+      padding: 2rem 2.5rem;
+      min-width: 240px;
+    }
+    .contact-card .c-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+    .contact-card .c-value {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--white);
+    }
+    .contact-card a { color: inherit; text-decoration: none; }
+    .contact-card a:hover { color: var(--ochre); }
+
+    /* ─── Footer ─────────────────────────────────────────────────────── */
+    footer {
+      background: rgba(0,0,0,0.4);
+      border-top: 1px solid rgba(232,213,163,0.08);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-brand {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      color: var(--sand);
+    }
+    .footer-note {
+      font-size: 0.72rem;
+      color: var(--mist);
+      opacity: 0.6;
+      letter-spacing: 0.05em;
+    }
+    .footer-anchor {
+      font-size: 0.72rem;
+      color: var(--ochre);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─── Animations ─────────────────────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.2s; }
+    .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+    /* ─── Mobile ──────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .hero { padding: 0 1.5rem 4rem; }
+      .offer-grid, .land-layout, .gov-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .offer-cards, .why-grid, .partner-categories { grid-template-columns: 1fr; }
+      .proof-band { padding: 3rem 1.5rem; gap: 2rem; }
+      footer { padding: 1.5rem; }
+      .hero-stats { gap: 2rem; }
+      .scroll-indicator { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────────────────────────────── -->
+  <nav id="main-nav">
+    <a class="nav-logo" href="#">
+      Laisamis Climate & Land Initiative
+      <span>Marsabit County · Kenya</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#offer">The Testbed</a></li>
+      <li><a href="#land">The Land</a></li>
+      <li><a href="#governance">Governance</a></li>
+      <li><a href="#partners">Partners</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ────────────────────────────────────────────────────────── -->
+  <section class="hero" id="home">
+
+    <!-- SVG landscape: layered silhouette of arid plains, acacia, mountain -->
+    <svg class="hero-bg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0d1f2d"/>
+          <stop offset="40%" stop-color="#1c3a50"/>
+          <stop offset="100%" stop-color="#2d4a3e"/>
+        </linearGradient>
+        <linearGradient id="sunGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" gradientUnits="objectBoundingBox" id="sunGlow">
+          <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+        </linearGradient>
+        <radialGradient id="sunGlow" cx="70%" cy="35%" r="25%">
+          <stop offset="0%" stop-color="#f6c55a" stop-opacity="0.5"/>
+          <stop offset="60%" stop-color="#c47c2b" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#c47c2b" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="haze">
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+          <feColorMatrix type="saturate" values="0"/>
+          <feBlend in="SourceGraphic" mode="overlay" result="blend"/>
+          <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+        </filter>
+      </defs>
+
+      <!-- Sky -->
+      <rect width="1440" height="900" fill="url(#skyGrad)"/>
+
+      <!-- Sun glow -->
+      <ellipse cx="1010" cy="310" rx="320" ry="220" fill="url(#sunGlow)" opacity="0.8"/>
+      <!-- Sun disc -->
+      <circle cx="1010" cy="315" r="48" fill="#f6c55a" opacity="0.35"/>
+      <circle cx="1010" cy="315" r="30" fill="#fde68a" opacity="0.45"/>
+
+      <!-- Stars scattered -->
+      <g fill="#faf8f4" opacity="0.6">
+        <circle cx="120" cy="80" r="1.2"/><circle cx="230" cy="55" r="0.8"/>
+        <circle cx="380" cy="120" r="1"/><circle cx="510" cy="40" r="1.4"/>
+        <circle cx="640" cy="90" r="0.9"/><circle cx="720" cy="55" r="1.1"/>
+        <circle cx="150" cy="180" r="0.8"/><circle cx="310" cy="200" r="1"/>
+        <circle cx="460" cy="155" r="0.7"/><circle cx="90" cy="280" r="1"/>
+      </g>
+
+      <!-- Distant mountain range (Mt. Kulal) -->
+      <path d="M0 550 L80 420 L160 480 L260 350 L340 440 L430 360 L520 430 L620 310 L700 400 L790 330 L870 410 L960 290 L1040 380 L1120 320 L1200 390 L1280 340 L1360 400 L1440 360 L1440 900 L0 900Z"
+            fill="#0f2a1e" opacity="0.7"/>
+
+      <!-- Mid mountain layer -->
+      <path d="M0 580 L100 510 L200 540 L310 480 L440 530 L560 470 L680 520 L820 460 L920 510 L1060 450 L1180 500 L1300 470 L1440 510 L1440 900 L0 900Z"
+            fill="#0d2218" opacity="0.8"/>
+
+      <!-- Plain / ground layer -->
+      <path d="M0 650 Q200 620 400 645 Q600 668 800 638 Q1000 610 1200 642 Q1350 660 1440 645 L1440 900 L0 900Z"
+            fill="#1a2e18" opacity="0.9"/>
+
+      <!-- Chalbi desert floor texture -->
+      <path d="M0 720 Q300 700 600 715 Q900 730 1200 712 Q1350 705 1440 718 L1440 900 L0 900Z"
+            fill="#2a1f0d"/>
+
+      <!-- Acacia tree silhouettes -->
+      <!-- Tree 1 -->
+      <g transform="translate(180, 590)">
+        <rect x="-4" y="30" width="8" height="80" fill="#0a1a0a"/>
+        <ellipse cx="0" cy="15" rx="55" ry="22" fill="#0a1a0a"/>
+        <ellipse cx="-20" cy="20" rx="35" ry="16" fill="#0c1e0c"/>
+        <ellipse cx="25" cy="18" rx="40" ry="18" fill="#0a1a0a"/>
+      </g>
+      <!-- Tree 2 -->
+      <g transform="translate(420, 610)">
+        <rect x="-3" y="25" width="6" height="65" fill="#0a1a0a"/>
+        <ellipse cx="0" cy="10" rx="45" ry="18" fill="#0a1a0a"/>
+        <ellipse cx="-18" cy="16" rx="28" ry="13" fill="#0c1e0c"/>
+        <ellipse cx="20" cy="14" rx="32" ry="15" fill="#0a1a0a"/>
+      </g>
+      <!-- Tree 3 small -->
+      <g transform="translate(640, 625)">
+        <rect x="-2" y="20" width="5" height="50" fill="#0a1a0a"/>
+        <ellipse cx="0" cy="8" rx="32" ry="14" fill="#0a1a0a"/>
+      </g>
+      <!-- Tree 4 -->
+      <g transform="translate(900, 605)">
+        <rect x="-5" y="35" width="9" height="90" fill="#0a1a0a"/>
+        <ellipse cx="0" cy="18" rx="62" ry="24" fill="#0a1a0a"/>
+        <ellipse cx="-25" cy="25" rx="38" ry="17" fill="#0c1e0c"/>
+        <ellipse cx="30" cy="22" rx="44" ry="20" fill="#0a1a0a"/>
+      </g>
+      <!-- Tree 5 -->
+      <g transform="translate(1150, 620)">
+        <rect x="-3" y="28" width="7" height="72" fill="#0a1a0a"/>
+        <ellipse cx="0" cy="12" rx="50" ry="20" fill="#0a1a0a"/>
+        <ellipse cx="22" cy="18" rx="30" ry="14" fill="#0c1e0c"/>
+      </g>
+      <!-- Tree 6 distant small -->
+      <g transform="translate(1340, 630)" opacity="0.7">
+        <rect x="-2" y="18" width="5" height="45" fill="#0a1a0a"/>
+        <ellipse cx="0" cy="7" rx="28" ry="12" fill="#0a1a0a"/>
+      </g>
+
+      <!-- Ground texture lines (cracked earth) -->
+      <g stroke="#3a2a12" stroke-width="0.8" opacity="0.4">
+        <path d="M50 780 Q120 790 180 775"/>
+        <path d="M300 800 Q370 788 440 805"/>
+        <path d="M600 790 Q680 778 750 792"/>
+        <path d="M900 785 Q970 798 1050 782"/>
+        <path d="M1200 792 Q1290 780 1380 795"/>
+        <path d="M100 820 Q160 832 220 818"/>
+        <path d="M500 825 Q560 812 630 828"/>
+        <path d="M850 818 Q920 830 990 815"/>
+      </g>
+
+      <!-- Atmospheric haze band at horizon -->
+      <rect x="0" y="450" width="1440" height="120" fill="url(#skyGrad)" opacity="0.3"/>
+    </svg>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <span class="hero-tag">Laisamis Constituency · Marsabit County · Kenya</span>
+      <h1>Africa's most accessible<br/><em>large-scale ASAL<br/>climate technology testbed</em></h1>
+      <p class="hero-sub">
+        1.85 million hectares of community-governed dryland, four ecological zones, and a constitutional governance framework — offered as a structured deployment environment for international climate technology companies.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">1.85M</span>
+          <span class="stat-label">hectares available</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">4</span>
+          <span class="stat-label">ecological zones</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">6</span>
+          <span class="stat-label">community wards</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">690MW</span>
+          <span class="stat-label">wind power adjacent<br/>(Lake Turkana)</span>
+        </div>
+      </div>
+
+      <div class="hero-cta">
+        <a href="#contact" class="btn-primary">Request Briefing Document</a>
+        <a href="#offer" class="btn-secondary">Learn More ↓</a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ── WHAT WE OFFER ─────────────────────────────────────────────── -->
+  <section id="offer">
+    <span class="section-tag">The Opportunity</span>
+    <div class="offer-grid">
+      <div class="offer-left">
+        <h2 class="section-title">A structured deployment environment you cannot easily find elsewhere</h2>
+        <p class="section-body">
+          Climate technology companies need real-world pilots in genuine dryland conditions — at scale, with community consent, under a governance framework that international investors can rely on. Laisamis provides exactly that. We bring land, consent, workforce, and legal structure. You bring technology and capital.
+        </p>
+        <p class="section-body" style="margin-top:1rem;">
+          ASAL regions cover 80% of Kenya and roughly 40% of sub-Saharan Africa. Technology proven here is technology proven for one of the world's largest underserved markets.
+        </p>
+      </div>
+      <div class="offer-right">
+        <div class="offer-cards">
+          <div class="offer-card fade-up">
+            <span class="offer-card-icon">☀️</span>
+            <h3>Solar &amp; Energy</h3>
+            <p>Among the highest solar irradiance in East Africa. Ideal for solar irrigation, off-grid energy, and energy storage pilots.</p>
+          </div>
+          <div class="offer-card fade-up">
+            <span class="offer-card-icon">💧</span>
+            <h3>Water Systems</h3>
+            <p>Atmospheric water harvesting, rainwater capture, and groundwater sensing under genuine arid and semi-arid conditions.</p>
+          </div>
+          <div class="offer-card fade-up">
+            <span class="offer-card-icon">🌱</span>
+            <h3>Soil &amp; Carbon</h3>
+            <p>Four ecological zones for soil sensing, carbon measurement, and rangeland restoration technology at multi-site scale.</p>
+          </div>
+          <div class="offer-card fade-up">
+            <span class="offer-card-icon">🛰️</span>
+            <h3>Remote Sensing</h3>
+            <p>Vast open terrain ideal for satellite validation, drone deployment, and NDVI / land-use monitoring applications.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THE LAND ──────────────────────────────────────────────────── -->
+  <section id="land">
+    <span class="section-tag">The Land</span>
+    <h2 class="section-title">20,290 km² across four ecological zones</h2>
+
+    <div class="land-layout">
+      <!-- SVG constituency map placeholder -->
+      <div class="map-container">
+        <span class="map-label">Laisamis Constituency — 6 Wards</span>
+        <div class="map-svg-wrap">
+          <svg viewBox="0 0 400 480" width="100%" xmlns="http://www.w3.org/2000/svg" style="max-height:420px;">
+            <defs>
+              <linearGradient id="mapGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2d4a3e"/>
+                <stop offset="100%" stop-color="#1a2e18"/>
+              </linearGradient>
+            </defs>
+            <!-- Ward outlines — schematic, not precise -->
+            <!-- Ward 1: Logologo (north) -->
+            <path d="M80 20 L320 20 L340 100 L310 130 L260 120 L200 135 L140 125 L90 110 Z"
+                  fill="#1c3a2a" stroke="#a8bfcc" stroke-width="1" opacity="0.9"/>
+            <text x="200" y="80" text-anchor="middle" fill="#e8d5a3" font-size="11" font-family="Outfit,sans-serif" letter-spacing="1">Logologo</text>
+
+            <!-- Ward 2: Karare -->
+            <path d="M90 110 L140 125 L200 135 L260 120 L310 130 L320 200 L280 225 L210 230 L150 218 L95 205 Z"
+                  fill="#1a3525" stroke="#a8bfcc" stroke-width="1" opacity="0.9"/>
+            <text x="205" y="178" text-anchor="middle" fill="#e8d5a3" font-size="11" font-family="Outfit,sans-serif" letter-spacing="1">Karare</text>
+
+            <!-- Ward 3: Laisamis (centre) -->
+            <path d="M95 205 L150 218 L210 230 L280 225 L305 295 L265 320 L200 325 L145 315 L90 300 Z"
+                  fill="#183020" stroke="#a8bfcc" stroke-width="1" opacity="0.9"/>
+            <text x="197" y="275" text-anchor="middle" fill="#e8d5a3" font-size="11" font-family="Outfit,sans-serif" letter-spacing="1">Laisamis</text>
+
+            <!-- Ward 4: Korr/Ngurunit -->
+            <path d="M30 130 L90 110 L95 205 L90 300 L40 290 L20 240 L25 180 Z"
+                  fill="#162b1c" stroke="#a8bfcc" stroke-width="1" opacity="0.9"/>
+            <text x="55" y="215" text-anchor="middle" fill="#e8d5a3" font-size="9" font-family="Outfit,sans-serif" letter-spacing="0.5">Korr/</text>
+            <text x="55" y="228" text-anchor="middle" fill="#e8d5a3" font-size="9" font-family="Outfit,sans-serif" letter-spacing="0.5">Ngurunit</text>
+
+            <!-- Ward 5: Loiyangalani (east) -->
+            <path d="M310 130 L380 120 L390 200 L370 270 L340 290 L305 295 L280 225 L320 200 Z"
+                  fill="#1a3020" stroke="#a8bfcc" stroke-width="1" opacity="0.9"/>
+            <text x="348" y="215" text-anchor="middle" fill="#e8d5a3" font-size="9" font-family="Outfit,sans-serif" letter-spacing="0.5">Loiyang-</text>
+            <text x="348" y="228" text-anchor="middle" fill="#e8d5a3" font-size="9" font-family="Outfit,sans-serif" letter-spacing="0.5">alani</text>
+
+            <!-- Ward 6: Kargi/South Horr (south) -->
+            <path d="M40 290 L90 300 L145 315 L200 325 L265 320 L305 295 L340 290 L350 380 L310 420 L200 435 L90 420 L50 380 Z"
+                  fill="#142a18" stroke="#a8bfcc" stroke-width="1" opacity="0.9"/>
+            <text x="200" y="375" text-anchor="middle" fill="#e8d5a3" font-size="10" font-family="Outfit,sans-serif" letter-spacing="0.5">Kargi / South Horr</text>
+
+            <!-- Lake Turkana label -->
+            <text x="25" y="370" fill="#6a9ab0" font-size="8" font-family="Outfit,sans-serif" opacity="0.8" transform="rotate(-55,25,370)">Lake Turkana →</text>
+
+            <!-- Scale bar -->
+            <line x1="40" y1="460" x2="160" y2="460" stroke="#a8bfcc" stroke-width="1" opacity="0.5"/>
+            <line x1="40" y1="455" x2="40" y2="465" stroke="#a8bfcc" stroke-width="1" opacity="0.5"/>
+            <line x1="160" y1="455" x2="160" y2="465" stroke="#a8bfcc" stroke-width="1" opacity="0.5"/>
+            <text x="100" y="475" text-anchor="middle" fill="#a8bfcc" font-size="9" font-family="Outfit,sans-serif" opacity="0.7">~50 km (schematic)</text>
+
+            <!-- Compass -->
+            <text x="360" y="460" text-anchor="middle" fill="#a8bfcc" font-size="20" font-family="Outfit,sans-serif" opacity="0.6">N</text>
+            <line x1="360" y1="440" x2="360" y2="430" stroke="#a8bfcc" stroke-width="1.5" opacity="0.6"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Ecological zones -->
+      <div>
+        <p class="section-body">Six administrative wards spanning four distinct ecological zones — all within a single community governance framework. A single partnership gives technology companies access to diverse deployment conditions that would otherwise require agreements across multiple regions.</p>
+
+        <div class="zone-list">
+          <div class="zone-item fade-up">
+            <div class="zone-dot" style="background:#2d6a4f;"></div>
+            <div class="zone-text">
+              <h4>Zone II — Highland Forest</h4>
+              <p>Mt. Kulal and Marsabit highlands, up to 1,000mm rainfall. High conservation and biodiversity value. Altitude to 2,066m.</p>
+            </div>
+          </div>
+          <div class="zone-item fade-up">
+            <div class="zone-dot" style="background:#8b3a1a;"></div>
+            <div class="zone-text">
+              <h4>Zone IV — Semi-Arid Mid-Slopes</h4>
+              <p>Transitional zone with soil carbon and solar pilot potential. Ideal for agri-climate data and rangeland restoration technology.</p>
+            </div>
+          </div>
+          <div class="zone-item fade-up">
+            <div class="zone-dot" style="background:#c47c2b;"></div>
+            <div class="zone-text">
+              <h4>Zone V/VI — Arid Bushed Grassland</h4>
+              <p>Vast open terrain at 300–900m. Primary climate tech testbed zone for solar, water harvesting, and remote sensing at scale.</p>
+            </div>
+          </div>
+          <div class="zone-item fade-up">
+            <div class="zone-dot" style="background:#e8d5a3;"></div>
+            <div class="zone-text">
+              <h4>Chalbi/Kaisut Desert</h4>
+              <p>Extreme aridity, highest solar irradiance in the region. Most dramatic pilot conditions for atmospheric water and solar technology.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:2rem; padding:1.5rem; border:1px solid rgba(168,191,204,0.15); background:rgba(28,43,58,0.4);">
+          <p style="font-size:0.78rem; color:var(--mist); line-height:1.7;">
+            <strong style="color:var(--sand);">Communities:</strong> Rendille, Samburu, Gabbra, El Molo, Turkana &nbsp;·&nbsp;
+            <strong style="color:var(--sand);">Altitude:</strong> 300m – 2,066m &nbsp;·&nbsp;
+            <strong style="color:var(--sand);">UNESCO:</strong> Mt. Kulal Biosphere Reserve
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROOF POINT ────────────────────────────────────────────────── -->
+  <div class="proof-band">
+    <blockquote>
+      "The same geography that hosts Africa's largest wind power project is available for your climate technology pilots."
+      <cite>Lake Turkana Wind Power — 690MW operational — borders Laisamis Constituency to the west</cite>
+    </blockquote>
+    <div class="proof-stat">
+      <span class="big">690MW</span>
+      <span class="small">proven large-scale<br/>infrastructure adjacent</span>
+    </div>
+  </div>
+
+  <!-- ── WHY PARTNER ────────────────────────────────────────────────── -->
+  <section id="why">
+    <span class="section-tag">Why Laisamis</span>
+    <h2 class="section-title">Five reasons this deployment<br/>environment is exceptional</h2>
+
+    <div class="why-grid">
+      <div class="why-card fade-up">
+        <span class="why-num">01</span>
+        <h3>Scale</h3>
+        <p>1.85 million hectares is large enough to run multi-site, multi-variable pilots simultaneously. No other community-governed ASAL environment in Kenya offers this at scale.</p>
+      </div>
+      <div class="why-card fade-up">
+        <span class="why-num">02</span>
+        <h3>Diversity</h3>
+        <p>Four ecological zones in one constituency. Companies get varied conditions — forest, semi-arid, arid grassland, extreme desert — from a single partnership agreement.</p>
+      </div>
+      <div class="why-card fade-up">
+        <span class="why-num">03</span>
+        <h3>Addressable Market</h3>
+        <p>ASAL regions cover 80% of Kenya and 40% of sub-Saharan Africa. Technology proven here is technology proven for one of the world's largest underserved markets.</p>
+      </div>
+      <div class="why-card fade-up">
+        <span class="why-num">04</span>
+        <h3>Workforce</h3>
+        <p>A large, mobilisable youth population ready to be trained as field monitors, data collectors, and installation technicians — motivated, local, and cost-effective.</p>
+      </div>
+      <div class="why-card fade-up">
+        <span class="why-num">05</span>
+        <h3>Governance</h3>
+        <p>Constitutional NLC oversight, elected ward trustees, and benefit-sharing agreements built from the start. The legal clarity and community consent that African pilots routinely lack.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GOVERNANCE ─────────────────────────────────────────────────── -->
+  <section id="governance">
+    <span class="section-tag">Governance</span>
+    <div class="gov-layout">
+      <div>
+        <h2 class="section-title">Community-owned.<br/>Constitutionally anchored.</h2>
+        <p class="section-body">
+          The governance failures that have damaged high-profile African land projects follow a consistent pattern: weak community consent, no legal anchor, and benefits captured by intermediaries. We have built the structure specifically to prevent that outcome.
+        </p>
+
+        <div class="gov-pillars">
+          <div class="gov-pillar fade-up">
+            <div class="pillar-line"></div>
+            <div class="pillar-body">
+              <h4>National Land Commission (NLC)</h4>
+              <p>Constitutional body under Article 67 of the Constitution of Kenya. Mandated to oversee community land registration under the Community Land Act 2016. Already active in Laisamis — 9 formal sensitisation forums conducted across all 6 wards in 2024/2025. Institutional anchor that no individual or NGO can override.</p>
+            </div>
+          </div>
+          <div class="gov-pillar fade-up">
+            <div class="pillar-line"></div>
+            <div class="pillar-body">
+              <h4>Community Land Trust</h4>
+              <p>Being established with elected ward trustees from all six wards. Community-owned — not NGO-managed. Benefit-sharing agreements embedded in the founding structure so that pilot revenues flow directly to communities, not intermediaries.</p>
+            </div>
+          </div>
+          <div class="gov-pillar fade-up">
+            <div class="pillar-line"></div>
+            <div class="pillar-body">
+              <h4>Marsabit County Government</h4>
+              <p>Institutional coverage through County Land CECM and formal county engagement. Documented county government support ensures continuity beyond election cycles and provides an additional layer of accountability.</p>
+            </div>
+          </div>
+          <div class="gov-pillar fade-up">
+            <div class="pillar-line"></div>
+            <div class="pillar-body">
+              <h4>Political engagement — conveners only</h4>
+              <p>The Laisamis MP and Marsabit County Governor are engaged as community conveners — opening ward barazas and endorsing the process. Governance and decision-making authority rests with the NLC and Community Land Trust, not with political officeholders.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="background:rgba(28,43,58,0.5); border:1px solid rgba(168,191,204,0.15); padding:2rem; margin-bottom:2rem;">
+          <span class="section-tag" style="margin-bottom:0.8rem;">Community Process</span>
+          <p style="font-size:0.85rem; color:var(--sand); line-height:1.8;">
+            Community engagement is structured through formal ward-level <em>barazas</em> — public assemblies across all six wards — run by NLC officers, supported by FM radio outreach in Rendille, Samburu, and Swahili, and documented through formal resolutions with NLC witnesses. Every decision is on record.
+          </p>
+        </div>
+
+        <div class="risk-note">
+          <h4>⚠ Legal clarity before commitment</h4>
+          <p>Approximately 173,700 hectares within the constituency are subject to an active High Court case disputing conversion of trust land to public land. These parcels are explicitly excluded from any partner commitment until legal status is resolved. All partner agreements are scoped only to undisputed community land with clear NLC registration.</p>
+        </div>
+
+        <div style="background:rgba(45,74,62,0.3); border:1px solid rgba(45,106,79,0.3); padding:1.5rem; margin-top:1.5rem;">
+          <p style="font-size:0.82rem; color:var(--mist); line-height:1.75;">
+            <strong style="color:var(--sand);">What this means for partners:</strong> No individual, NGO, or political actor can unilaterally alter land access agreements. The governance architecture is designed to outlast elections, personnel changes, and external pressure.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PARTNERS ───────────────────────────────────────────────────── -->
+  <section id="partners">
+    <span class="section-tag">Who We Are Engaging</span>
+    <h2 class="section-title">Technology partners, development finance,<br/>and community institutions</h2>
+    <p class="section-body" style="margin-bottom:0;">We are building a structured ecosystem of international technology partners, development finance institutions, and community governance bodies. International organisations bring capital and technology; local and national institutions provide legitimacy and legal grounding.</p>
+
+    <div class="partner-categories">
+      <div class="partner-cat">
+        <h3>Climate Tech Accelerators</h3>
+        <ul class="partner-list">
+          <li>Third Derivative (D3) / RMI</li>
+          <li>Factor[e] Ventures / Delta40</li>
+          <li>Elemental Impact</li>
+          <li>Breakthrough Energy Ventures</li>
+          <li>Katapult Climate</li>
+          <li>Acumen</li>
+        </ul>
+      </div>
+      <div class="partner-cat">
+        <h3>Technology Domains</h3>
+        <ul class="partner-list">
+          <li>Solar irrigation &amp; off-grid energy</li>
+          <li>Atmospheric water harvesting</li>
+          <li>Soil sensing &amp; carbon measurement</li>
+          <li>Rangeland monitoring &amp; restoration</li>
+          <li>Satellite &amp; remote sensing</li>
+          <li>Agri-climate data systems</li>
+        </ul>
+      </div>
+      <div class="partner-cat">
+        <h3>Development Finance</h3>
+        <ul class="partner-list">
+          <li>USAID / Feed the Future</li>
+          <li>GIZ Kenya</li>
+          <li>IFAD</li>
+          <li>Green Climate Fund (GCF)</li>
+          <li>African Development Bank</li>
+          <li>UKAID / FCDO</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ────────────────────────────────────────────────────── -->
+  <section id="contact">
+    <span class="section-tag" style="display:block; text-align:center;">Get Involved</span>
+    <h2 class="section-title" style="text-align:center; max-width:600px; margin:0 auto 1.5rem;">Request a briefing.<br/>Start a conversation.</h2>
+    <p class="section-body" style="text-align:center; margin:0 auto 1rem;">
+      We are currently in active engagement with climate technology accelerators, development finance institutions, and community governance bodies. If you represent an organisation working on climate technology deployment, impact investment, or dryland community development, we would like to hear from you.
+    </p>
+    <p class="section-body" style="text-align:center; margin:0 auto;">
+      We can share a full briefing document including land classification data, ecological zone maps, community engagement status, and governance structure documentation.
+    </p>
+
+    <div class="contact-cards">
+      <div class="contact-card">
+        <span class="c-label">Lead Contact</span>
+        <span class="c-value">Hamed Nalle</span>
+      </div>
+      <div class="contact-card">
+        <span class="c-label">Email</span>
+        <span class="c-value"><a href="mailto:hamed@laisamisclimate.org">hamed@laisamisclimate.org</a></span>
+      </div>
+      <div class="contact-card">
+        <span class="c-label">Location</span>
+        <span class="c-value">Laisamis, Marsabit County<br/>Kenya</span>
+      </div>
+    </div>
+
+    <div style="margin-top:3rem; text-align:center;">
+      <a href="mailto:hamed@laisamisclimate.org?subject=Briefing Document Request — Laisamis Climate %26 Land Initiative" class="btn-primary" style="font-size:0.9rem; padding:1.1rem 2.8rem;">
+        Request Briefing Document
+      </a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+  <footer>
+    <span class="footer-brand">Laisamis Climate &amp; Land Initiative</span>
+    <span class="footer-note">Marsabit County, Kenya &nbsp;·&nbsp; Community-governed ASAL climate technology testbed</span>
+    <a href="#home" class="footer-anchor">↑ Back to top</a>
+  </footer>
+
+  <!-- ── JS ─────────────────────────────────────────────────────────── -->
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Fade-up on scroll
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    fadeEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
