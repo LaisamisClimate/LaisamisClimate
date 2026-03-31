@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Policies & Disclaimers — Laisamis Climate & Land Initiative</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --earth:    #1a1208;
+      --laterite: #8b3a1a;
+      --ochre:    #c47c2b;
+      --sand:     #e8d5a3;
+      --dust:     #f5ede0;
+      --sky:      #1c2b3a;
+      --mist:     #a8bfcc;
+      --white:    #faf8f4;
+      --accent:   #d4601a;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans:  'Outfit', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--earth);
+      color: var(--dust);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── Nav ─────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(26,18,8,0.97);
+      border-bottom: 1px solid rgba(196,124,43,0.15);
+      backdrop-filter: blur(8px);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      color: var(--sand);
+      text-decoration: none;
+      line-height: 1.2;
+    }
+    .nav-back {
+      color: var(--ochre);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: opacity 0.2s;
+    }
+    .nav-back:hover { opacity: 0.7; }
+
+    /* ─── Hero band ───────────────────────────────────────────────── */
+    .page-hero {
+      padding: 8rem 3rem 4rem;
+      border-bottom: 1px solid rgba(196,124,43,0.15);
+      background: linear-gradient(to bottom, rgba(28,43,58,0.4), transparent);
+    }
+    .page-hero .tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .page-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white);
+      margin-bottom: 1rem;
+      max-width: 700px;
+    }
+    .page-hero p {
+      font-size: 0.92rem;
+      color: var(--mist);
+      max-width: 620px;
+      line-height: 1.8;
+    }
+
+    /* ─── Tab nav ─────────────────────────────────────────────────── */
+    .tab-bar {
+      position: sticky;
+      top: 64px;
+      z-index: 50;
+      background: rgba(26,18,8,0.97);
+      border-bottom: 1px solid rgba(196,124,43,0.12);
+      backdrop-filter: blur(8px);
+      display: flex;
+      padding: 0 3rem;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .tab-bar a {
+      color: var(--mist);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 1.1rem 1.8rem;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+      display: block;
+    }
+    .tab-bar a:hover,
+    .tab-bar a.active {
+      color: var(--ochre);
+      border-bottom-color: var(--ochre);
+    }
+
+    /* ─── Content ─────────────────────────────────────────────────── */
+    .content-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 5rem 3rem 6rem;
+    }
+
+    .policy-section {
+      display: none;
+    }
+    .policy-section.active {
+      display: block;
+    }
+
+    .policy-section h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--white);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .policy-section .effective {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      display: block;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(196,124,43,0.2);
+    }
+
+    .policy-section h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      color: var(--white);
+      margin: 2.5rem 0 0.8rem;
+    }
+
+    .policy-section p {
+      font-size: 0.92rem;
+      color: var(--sand);
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+
+    .policy-section ul {
+      margin: 0.5rem 0 1rem 1.2rem;
+      list-style: none;
+    }
+    .policy-section ul li {
+      font-size: 0.9rem;
+      color: var(--sand);
+      line-height: 1.8;
+      padding: 0.3rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+    .policy-section ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.75rem;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--ochre);
+    }
+
+    /* Warning / critical box */
+    .alert-box {
+      background: rgba(212,96,26,0.1);
+      border-left: 3px solid var(--accent);
+      padding: 1.5rem 1.8rem;
+      margin: 2rem 0;
+      border-radius: 0 2px 2px 0;
+    }
+    .alert-box h4 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .alert-box p {
+      font-size: 0.85rem;
+      color: var(--sand);
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    /* Info box */
+    .info-box {
+      background: rgba(28,43,58,0.6);
+      border: 1px solid rgba(168,191,204,0.2);
+      padding: 1.5rem 1.8rem;
+      margin: 2rem 0;
+    }
+    .info-box p {
+      font-size: 0.85rem;
+      color: var(--mist);
+      line-height: 1.75;
+      margin: 0;
+    }
+    .info-box a {
+      color: var(--ochre);
+      text-decoration: none;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(232,213,163,0.1);
+      margin: 3rem 0;
+    }
+
+    /* ─── Footer ──────────────────────────────────────────────────── */
+    footer {
+      background: rgba(0,0,0,0.4);
+      border-top: 1px solid rgba(232,213,163,0.08);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-brand {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      color: var(--sand);
+    }
+    .footer-note {
+      font-size: 0.72rem;
+      color: var(--mist);
+      opacity: 0.6;
+      letter-spacing: 0.05em;
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-links a {
+      font-size: 0.72rem;
+      color: var(--ochre);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─── Mobile ──────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .page-hero { padding: 7rem 1.5rem 3rem; }
+      .tab-bar { padding: 0 1rem; }
+      .content-wrap { padding: 3rem 1.5rem 4rem; }
+      footer { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ───────────────────────────────────────────────────────── -->
+  <nav>
+    <a class="nav-logo" href="index.html">Laisamis Climate & Land Initiative</a>
+    <a class="nav-back" href="index.html">← Back to site</a>
+  </nav>
+
+  <!-- ── PAGE HERO ─────────────────────────────────────────────────── -->
+  <div class="page-hero">
+    <span class="tag">Legal & Governance</span>
+    <h1>Policies & Disclaimers</h1>
+    <p>This page sets out the Privacy Policy, Terms of Use, and Land & Partnership Disclaimer governing this website and all engagement with the Laisamis Climate & Land Initiative. Please read all three sections before making contact or entering into any discussion of partnership.</p>
+  </div>
+
+  <!-- ── TAB BAR ───────────────────────────────────────────────────── -->
+  <div class="tab-bar">
+    <a href="#" class="active" onclick="showPolicy('privacy', this); return false;">Privacy Policy</a>
+    <a href="#" onclick="showPolicy('terms', this); return false;">Terms of Use</a>
+    <a href="#" onclick="showPolicy('disclaimer', this); return false;">Land & Partnership Disclaimer</a>
+  </div>
+
+  <!-- ── CONTENT ───────────────────────────────────────────────────── -->
+  <div class="content-wrap">
+
+    <!-- PRIVACY POLICY -->
+    <div class="policy-section active" id="privacy">
+      <h2>Privacy Policy</h2>
+      <span class="effective">Effective Date: 1 April 2026 &nbsp;·&nbsp; Last Updated: 1 April 2026</span>
+
+      <p>The Laisamis Climate & Land Initiative ("we", "us", "our") is committed to protecting the privacy of all individuals who visit this website or make contact with us. This Privacy Policy explains what personal information we collect, how we use it, and your rights in relation to it.</p>
+
+      <h3>1. Who We Are</h3>
+      <p>The Laisamis Climate & Land Initiative is a community-led climate technology and land governance initiative based in Laisamis Constituency, Marsabit County, Kenya. Our lead contact is Hamed Nalle, reachable at hamednalle@laisamisclimate.co.ke.</p>
+
+      <h3>2. Information We Collect</h3>
+      <p>We collect personal information only when you voluntarily provide it to us. This occurs in the following circumstances:</p>
+      <ul>
+        <li>When you send us an email directly via the contact links on this website</li>
+        <li>When you contact us via WhatsApp using the link provided on this website</li>
+        <li>When you correspond with us in the course of partnership discussions or information requests</li>
+      </ul>
+      <p>The personal information you may provide includes your name, email address, phone number, organisation name, and any other information you choose to include in your message.</p>
+      <p>This website does not use cookies, tracking pixels, analytics scripts, or any third-party tracking technology. We do not automatically collect data about your visit, your device, or your browsing behaviour.</p>
+
+      <h3>3. How We Use Your Information</h3>
+      <p>We use personal information solely for the purpose for which it was provided — that is, to respond to your enquiry, to share information about the initiative, or to progress partnership discussions. We do not use your information for any other purpose without your explicit consent.</p>
+      <p>We do not sell, rent, share, or transfer your personal information to any third party, except where required by Kenyan law.</p>
+
+      <h3>4. How We Store Your Information</h3>
+      <p>Information you send us via email is stored in our email systems, which are secured by industry-standard encryption. We retain correspondence for as long as is necessary for the purpose for which it was collected, or as required by applicable law.</p>
+      <p>We take reasonable precautions to protect personal information from loss, misuse, and unauthorised access. However, no method of electronic communication is completely secure, and we cannot guarantee absolute security.</p>
+
+      <h3>5. Your Rights</h3>
+      <p>Under the Kenya Data Protection Act 2019, you have the right to:</p>
+      <ul>
+        <li>Access the personal information we hold about you</li>
+        <li>Request correction of inaccurate personal information</li>
+        <li>Request deletion of your personal information, subject to any legal retention obligations</li>
+        <li>Withdraw consent to processing at any time, where processing is based on consent</li>
+        <li>Lodge a complaint with the Office of the Data Protection Commissioner of Kenya</li>
+      </ul>
+      <p>To exercise any of these rights, contact us at hamednalle@laisamisclimate.co.ke.</p>
+
+      <h3>6. Children's Privacy</h3>
+      <p>This website is not directed at children under the age of 18. We do not knowingly collect personal information from children.</p>
+
+      <h3>7. Changes to This Policy</h3>
+      <p>We may update this Privacy Policy from time to time. Any changes will be published on this page with an updated effective date. We encourage you to review this policy periodically.</p>
+
+      <h3>8. Contact</h3>
+      <div class="info-box">
+        <p>For any privacy-related questions or requests, contact:<br/>
+        <strong style="color:var(--sand);">Hamed Nalle</strong><br/>
+        Laisamis Climate & Land Initiative<br/>
+        Laisamis, Marsabit County, Kenya<br/>
+        <a href="mailto:hamednalle@laisamisclimate.co.ke">hamednalle@laisamisclimate.co.ke</a> &nbsp;·&nbsp;
+        <a href="https://wa.me/254706594510">+254 706 594 510</a></p>
+      </div>
+    </div>
+
+    <!-- TERMS OF USE -->
+    <div class="policy-section" id="terms">
+      <h2>Terms of Use</h2>
+      <span class="effective">Effective Date: 1 April 2026 &nbsp;·&nbsp; Last Updated: 1 April 2026</span>
+
+      <p>These Terms of Use govern your access to and use of the Laisamis Climate & Land Initiative website at laisamisclimate.co.ke ("the Website"). By accessing this Website, you agree to be bound by these Terms. If you do not agree, please do not use the Website.</p>
+
+      <h3>1. Intellectual Property</h3>
+      <p>All content on this Website — including text, maps, ecological zone data, ward boundary information, project descriptions, governance frameworks, and graphic elements — is the intellectual property of the Laisamis Climate & Land Initiative unless otherwise attributed.</p>
+      <p>The IEBC ward boundary map reproduced on this Website is the property of the Independent Electoral and Boundaries Commission of Kenya. The Marsabit District Eco-Climatic Zones map is sourced from the Range Management Handbook of Kenya (Ministry of Livestock Development / GTZ, 1988) and is reproduced for informational purposes.</p>
+      <p>You may not reproduce, distribute, publish, or commercially exploit any content from this Website without our prior written permission. You may share links to this Website freely.</p>
+
+      <h3>2. Permitted Use</h3>
+      <p>This Website is provided for informational purposes — to describe the Laisamis Climate & Land Initiative, its land and ecological assets, its governance framework, and its partnership opportunities. You may use the Website for:</p>
+      <ul>
+        <li>Researching the initiative for potential partnership or investment purposes</li>
+        <li>Academic or journalistic research, with appropriate attribution</li>
+        <li>Personal, non-commercial reference</li>
+      </ul>
+
+      <h3>3. Prohibited Use</h3>
+      <p>You may not use this Website or any content derived from it to:</p>
+      <ul>
+        <li>Make any misrepresentation about the initiative, its land assets, or its governance structure</li>
+        <li>Claim any land rights, partnership status, or institutional affiliation not formally agreed in writing</li>
+        <li>Commercially exploit community land or community data described on this Website without formal agreement</li>
+        <li>Distribute misinformation about the communities of Laisamis Constituency or their land governance processes</li>
+        <li>Engage in any activity that would undermine the community consent processes described on this Website</li>
+      </ul>
+
+      <h3>4. Accuracy of Information</h3>
+      <p>We make every effort to ensure the information on this Website is accurate and current. However, land classification data, community engagement status, and governance progress are subject to ongoing change. We do not warrant that any information on this Website is complete, accurate, or up to date at any given time. For current and verified information, contact us directly.</p>
+
+      <h3>5. External Links</h3>
+      <p>This Website may contain links to external websites, including partner organisations and reference sources. We are not responsible for the content, accuracy, or privacy practices of any external website. Links do not constitute endorsement.</p>
+
+      <h3>6. Limitation of Liability</h3>
+      <p>To the fullest extent permitted by Kenyan law, the Laisamis Climate & Land Initiative shall not be liable for any loss or damage arising from your use of this Website or reliance on any information contained within it. Use of this Website is entirely at your own risk.</p>
+
+      <h3>7. Governing Law</h3>
+      <p>These Terms of Use are governed by the laws of the Republic of Kenya. Any dispute arising from these Terms shall be subject to the jurisdiction of the courts of Kenya.</p>
+
+      <h3>8. Changes to These Terms</h3>
+      <p>We reserve the right to update these Terms of Use at any time. Updated terms will be published on this page. Continued use of the Website following any update constitutes acceptance of the revised Terms.</p>
+
+      <div class="info-box">
+        <p>Questions about these Terms of Use? Contact us at <a href="mailto:hamednalle@laisamisclimate.co.ke">hamednalle@laisamisclimate.co.ke</a></p>
+      </div>
+    </div>
+
+    <!-- LAND & PARTNERSHIP DISCLAIMER -->
+    <div class="policy-section" id="disclaimer">
+      <h2>Land & Partnership Disclaimer</h2>
+      <span class="effective">Effective Date: 1 April 2026 &nbsp;·&nbsp; Last Updated: 1 April 2026</span>
+
+      <p>This disclaimer applies to all information published on this Website concerning land availability, community land governance, and partnership opportunities in Laisamis Constituency, Marsabit County, Kenya. It must be read carefully by any organisation or individual considering engagement with the Laisamis Climate & Land Initiative.</p>
+
+      <div class="alert-box">
+        <h4>⚠ Critical Notice — Disputed Land Parcels</h4>
+        <p>Approximately 173,700 hectares within Laisamis Constituency are currently subject to an active High Court of Kenya case disputing the conversion of trust land to public land. These parcels are explicitly and unconditionally excluded from any partnership commitment, land access agreement, pilot deployment, or carbon credit arrangement. No commitment of any kind relating to these parcels will be entered into until the legal status has been fully resolved by the court. Any representation to the contrary — by any party — should be treated as unauthorised and invalid.</p>
+      </div>
+
+      <h3>1. No Legal Offer of Land Access</h3>
+      <p>Nothing on this Website constitutes a legal offer of land access, a binding partnership agreement, or a commitment to any specific terms of engagement. All information published here is provided for the purpose of initiating discussions only.</p>
+      <p>Any land access agreement, technology pilot arrangement, or partnership memorandum of understanding must be separately negotiated, documented in writing, and formally executed in accordance with the Community Land Act 2016 of Kenya and under the oversight of the National Land Commission (NLC).</p>
+
+      <h3>2. Community Consent is Required</h3>
+      <p>All land described on this Website as available for climate technology pilots is community land governed by the communities of Laisamis Constituency — including the Rendille, Samburu, Gabbra, El Molo, and Turkana communities. Access to any portion of this land for any purpose requires:</p>
+      <ul>
+        <li>Free, prior, and informed consent of the relevant community, obtained through formal ward-level baraza processes</li>
+        <li>A formal resolution documented by an NLC officer</li>
+        <li>A written land access or partnership agreement approved by the Community Land Management Committee and/or Community Land Trust</li>
+        <li>Compliance with all applicable provisions of the Community Land Act 2016</li>
+      </ul>
+      <p>No individual, politician, elder, NGO, or third party has the authority to grant land access on behalf of these communities outside of this formal process. Any agreement purported to be made outside of this process is invalid and unenforceable.</p>
+
+      <h3>3. Governance Structure</h3>
+      <p>The institutional anchor of this initiative is the National Land Commission of Kenya, a constitutional body established under Article 67 of the Constitution of Kenya. The NLC's mandate includes the oversight of community land registration under the Community Land Act 2016. The NLC has conducted formal sensitisation forums across all six wards of Laisamis Constituency.</p>
+      <p>Political officeholders — including the Laisamis Member of Parliament and the Marsabit County Governor — are engaged in this initiative in the capacity of community conveners only. They do not hold, control, or have authority to dispose of community land. Governance and decision-making authority rests with the NLC and the Community Land Trust structures being established under the Community Land Act.</p>
+
+      <h3>4. Carbon Credits</h3>
+      <p>References to carbon credit potential on this Website describe a longer-term, secondary revenue stream that becomes viable as community land registration progresses. No carbon credit agreements, Verra VCS registrations, or Plan Vivo arrangements are currently in place. Any engagement with carbon credit developers will be subject to the same community consent and NLC oversight requirements described above.</p>
+
+      <h3>5. Protected Areas</h3>
+      <p>Losai National Reserve (approximately 1,800 sq. km) within the constituency is managed by the Kenya Wildlife Service (KWS) and is not available for climate technology pilots or any commercial arrangement. Mt. Kulal Biosphere Reserve is a UNESCO-designated area subject to its own governance and use restrictions. Neither area is included in the community land available under this initiative.</p>
+
+      <h3>6. No Warranty as to Land Data</h3>
+      <p>Land area figures, ecological zone classifications, and ward boundary descriptions published on this Website are provided for indicative purposes based on available data as of the date of publication. They do not constitute a formal land survey, a legal title document, or a boundary determination. Formal land surveys will be conducted as part of the community land registration process under NLC oversight.</p>
+
+      <h3>7. Partner Due Diligence</h3>
+      <p>We strongly encourage all prospective partners — including climate technology companies, accelerators, development finance institutions, and carbon credit developers — to conduct their own independent legal and governance due diligence before entering into any engagement. We will provide full briefing documentation, NLC engagement records, and community process documentation to support this process upon request.</p>
+
+      <div class="alert-box">
+        <h4>In summary</h4>
+        <p>This Website describes an initiative in active development. The governance structures are being built. The community processes are underway. No land has been committed to any partner. The disputed parcels are excluded from all discussions. All formal agreements require NLC oversight and community consent. Contact us to understand the current status before making any assumptions about timelines or availability.</p>
+      </div>
+
+      <div class="info-box">
+        <p>To request current status documentation, the NLC engagement record, or a formal briefing document, contact:<br/><br/>
+        <strong style="color:var(--sand);">Hamed Nalle</strong><br/>
+        Laisamis Climate & Land Initiative<br/>
+        <a href="mailto:hamednalle@laisamisclimate.co.ke">hamednalle@laisamisclimate.co.ke</a> &nbsp;·&nbsp;
+        <a href="https://wa.me/254706594510">+254 706 594 510</a></p>
+      </div>
+    </div>
+
+  </div><!-- end content-wrap -->
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+  <footer>
+    <span class="footer-brand">Laisamis Climate & Land Initiative</span>
+    <span class="footer-note">Marsabit County, Kenya &nbsp;·&nbsp; Community-governed ASAL climate technology testbed</span>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="policies.html">Policies</a>
+    </div>
+  </footer>
+
+  <script>
+    function showPolicy(id, el) {
+      // Hide all sections
+      document.querySelectorAll('.policy-section').forEach(s => s.classList.remove('active'));
+      // Remove active from all tabs
+      document.querySelectorAll('.tab-bar a').forEach(a => a.classList.remove('active'));
+      // Show selected
+      document.getElementById(id).classList.add('active');
+      el.classList.add('active');
+      // Scroll to content
+      document.querySelector('.content-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+
+</body>
+</html>
