@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LCLI Carbon Exchange | Community-First Carbon Brokerage</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.8.0/Recharts.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#1B3A2D;--amber:#C17F24;--parchment:#F5EFE0;--charcoal:#1A1A1A;
+  --teal:#2A7A6F;--green-light:#2a5040;--amber-light:#d4952e;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:#1A1A1A;color:#F5EFE0;overflow-x:hidden;}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;}
+.topo-bg{
+  background-color:#1B3A2D;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 49px,rgba(193,127,36,0.07) 50px),
+    repeating-linear-gradient(90deg,transparent,transparent 49px,rgba(193,127,36,0.07) 50px),
+    radial-gradient(ellipse at 20% 50%,rgba(42,122,111,0.15) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 20%,rgba(193,127,36,0.08) 0%,transparent 50%);
+}
+.card{background:rgba(26,26,26,0.95);border:1px solid rgba(193,127,36,0.15);border-radius:12px;transition:all .3s ease;}
+.card:hover{border-color:rgba(193,127,36,0.5);transform:translateY(-3px);box-shadow:0 12px 40px rgba(193,127,36,0.12);}
+.btn-amber{background:#C17F24;color:#1A1A1A;font-weight:600;padding:10px 22px;border-radius:6px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;transition:all .2s;}
+.btn-amber:hover{background:#d4952e;transform:translateY(-1px);}
+.btn-outline{background:transparent;color:#F5EFE0;border:1px solid rgba(245,239,224,0.4);padding:10px 22px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;transition:all .2s;}
+.btn-outline:hover{border-color:#C17F24;color:#C17F24;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.5px;}
+.badge-green{background:rgba(22,163,74,0.2);color:#4ade80;border:1px solid rgba(22,163,74,0.3);}
+.badge-amber{background:rgba(217,119,6,0.2);color:#fbbf24;border:1px solid rgba(217,119,6,0.3);}
+.badge-teal{background:rgba(42,122,111,0.2);color:#5eead4;border:1px solid rgba(42,122,111,0.3);}
+.badge-gray{background:rgba(100,100,100,0.2);color:#9ca3af;border:1px solid rgba(100,100,100,0.3);}
+.progress-bar{height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#2A7A6F,#C17F24);border-radius:3px;}
+.suspended-overlay{position:absolute;inset:0;background:rgba(26,26,26,0.82);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;}
+input,select,textarea{background:rgba(255,255,255,0.06);border:1px solid rgba(245,239,224,0.15);border-radius:8px;color:#F5EFE0;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;width:100%;outline:none;transition:border .2s;}
+input:focus,select:focus,textarea:focus{border-color:#C17F24;}
+select option{background:#1a1a1a;}
+.kpi-card{background:rgba(27,58,45,0.5);border:1px solid rgba(193,127,36,0.2);border-radius:10px;padding:18px;text-align:center;}
+.toast{position:fixed;bottom:24px;right:24px;background:#1B3A2D;border:1px solid #C17F24;color:#F5EFE0;padding:14px 22px;border-radius:10px;font-size:14px;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,0.4);animation:slideUp .3s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal{background:#1a1a1a;border:1px solid rgba(193,127,36,0.3);border-radius:16px;padding:32px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;}
+.filter-btn{padding:7px 16px;border-radius:20px;border:1px solid rgba(245,239,224,0.2);background:transparent;color:rgba(245,239,224,0.6);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.filter-btn.active{background:#C17F24;color:#1A1A1A;border-color:#C17F24;font-weight:600;}
+.nav-link{color:rgba(245,239,224,0.7);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s;cursor:pointer;}
+.nav-link:hover{color:#C17F24;}
+.loading-dots span{animation:blink 1.4s infinite;display:inline-block;}
+.loading-dots span:nth-child(2){animation-delay:.2s;}
+.loading-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:0;}40%{opacity:1;}}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:#1a1a1a;}
+::-webkit-scrollbar-thumb{background:#C17F24;border-radius:3px;}
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;padding:10px 14px;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:rgba(245,239,224,0.4);border-bottom:1px solid rgba(255,255,255,0.08);}
+td{padding:12px 14px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.05);}
+tr:hover td{background:rgba(255,255,255,0.02);}
+@media(max-width:768px){
+  .hide-mobile{display:none!important;}
+  .grid-2{grid-template-columns:1fr!important;}
+  .grid-4{grid-template-columns:1fr 1fr!important;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef}=React;
+const {LineChart,Line,BarChart,Bar,PieChart,Pie,Cell,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer}=Recharts;
+
+const PRICE_DATA=[
+  {m:'Jan',p:7.20},{m:'Feb',p:7.45},{m:'Mar',p:7.80},{m:'Apr',p:8.10},
+  {m:'May',p:8.40},{m:'Jun',p:7.90},{m:'Jul',p:8.20},{m:'Aug',p:8.80},
+  {m:'Sep',p:9.10},{m:'Oct',p:9.40},{m:'Nov',p:9.60},{m:'Dec',p:9.77},
+];
+const SUPPLY_DATA=[
+  {type:'REDD+ Forest',credits:13936},{type:'Grassland/Soil',credits:3200},
+  {type:'Ag. Soil (SALM)',credits:480},{type:'Agroforestry',credits:180},
+];
+const BUYER_PIE=[
+  {name:'Technology',value:31,color:'#2A7A6F'},
+  {name:'Aviation',value:24,color:'#C17F24'},
+  {name:'Finance',value:22,color:'#1B3A2D'},
+  {name:'Media/Ent.',value:13,color:'#8B6914'},
+  {name:'Other',value:10,color:'#4a5568'},
+];
+const BUYERS=[
+  {b:'Microsoft',t:'REDD+ Forest',v:'50,000–200,000 t',p:'$14–18/t'},
+  {b:'British Airways',t:'Grassland Soil',v:'100,000–500,000 t',p:'$8–12/t'},
+  {b:'Apple',t:'Agroforestry CRUs',v:'10,000–50,000 t',p:'$22–34/t'},
+  {b:'NatWest Group',t:'Grassland Soil',v:'20,000–80,000 t',p:'$9–13/t'},
+  {b:'Kering Group',t:'Agroforestry',v:'5,000–20,000 t',p:'$20–30/t'},
+];
+const PROJECTS=[
+  {id:1,name:'Northern Kenya Rangelands Carbon Project',dev:'Northern Rangelands Trust (NRT)',
+   loc:'Isiolo, Laikipia, Samburu, Marsabit',area:'1,900,000',type:'Grassland / Soil Carbon',
+   std:'VCS (Verra) #1468',status:'suspended',credits:'3,200,000 VCUs issued',
+   price:'$8–$12/tonne',sold:100,community:'$12.6M paid to 14 conservancies',
+   note:'Consent dispute resolution pending. LCLI does not list suspended credits.',
+   tags:['soil','review']},
+  {id:2,name:'Kasigau Corridor REDD+ Phase II',dev:'Wildlife Works Carbon',
+   loc:'Tsavo Corridor, Coast Province',area:'200,000',type:'REDD+ / Avoided Deforestation',
+   std:'VCS + CCB',status:'active',credits:'13,936,339 tCO₂e avoided to date',
+   annual:'1,428,835 tCO₂e/year',price:'$14–$18/tonne',sold:71,
+   community:'15 schools built; clean water for 25,000+',tags:['redd','active']},
+  {id:3,name:'Acorn Agroforestry — Embu & Tharaka-Nithi',dev:'Rabobank Acorn / Farm Africa / AGRA',
+   loc:'Embu & Tharaka-Nithi Counties',area:'~40,000 (4,000+ farms)',type:'Agroforestry / CRUs',
+   std:'ICROA-aligned (Acorn CRU)',status:'active',credits:'Ex-post satellite-verified CRUs',
+   annual:'180,000 CRUs current cohort',price:'€20–€31/tonne (~$22–$34)',sold:44,
+   community:'51% of bursary recipients are young women',tags:['agroforestry','active']},
+  {id:4,name:'Kenya Agricultural Carbon Project',dev:'Vi Agroforestry / World Bank BioCarbon Fund',
+   loc:'Siaya, Kisumu & Bungoma Counties',area:'22,000',type:'SALM / Soil Carbon + Agroforestry',
+   std:'VCS — VM0017',status:'active',credits:'1,200,000 tCO₂e estimated lifetime',
+   annual:'~60,000 tCO₂e/year',price:'$9–$13/tonne',sold:28,
+   community:'15–20% yield increase for participating farmers',tags:['soil','active']},
+];
+
+function useCounter(target,duration,go){
+  const [v,setV]=useState(0);
+  useEffect(()=>{
+    if(!go)return;
+    let cur=0;
+    const step=target/80;
+    const iv=setInterval(()=>{cur+=step;if(cur>=target){setV(target);clearInterval(iv);}else setV(Math.floor(cur));},duration/80);
+    return()=>clearInterval(iv);
+  },[target,go]);
+  return v;
+}
+
+function Navbar(){
+  const [sc,setSc]=useState(false);
+  useEffect(()=>{const h=()=>setSc(window.scrollY>40);window.addEventListener('scroll',h);return()=>window.removeEventListener('scroll',h);},[]);
+  const go=id=>document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  return(
+    <nav style={{position:'fixed',top:0,left:0,right:0,zIndex:50,
+      background:sc?'rgba(27,58,45,0.94)':'transparent',
+      backdropFilter:sc?'blur(16px)':'none',
+      borderBottom:sc?'1px solid rgba(193,127,36,0.2)':'none',
+      transition:'all .3s',padding:'0 24px'}}>
+      <div style={{maxWidth:1280,margin:'0 auto',display:'flex',alignItems:'center',justifyContent:'space-between',height:66}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div style={{width:34,height:34,background:'linear-gradient(135deg,#1B3A2D,#2A7A6F)',borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid #C17F24',fontSize:17}}>🌿</div>
+          <div>
+            <div style={{fontFamily:'Cormorant Garamond',fontWeight:700,fontSize:16,letterSpacing:.3}}>LCLI Carbon Exchange</div>
+            <div style={{fontSize:10,color:'rgba(245,239,224,0.4)',letterSpacing:.4}}>Community-First Carbon Brokerage | Northern Kenya</div>
+          </div>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:24}}>
+          {[['hero','Home'],['projects','Projects'],['estimator','Estimator'],['dashboard','Intelligence'],['contact','Contact']].map(([id,label],i)=>(
+            <span key={id} className={`nav-link hide-mobile`} onClick={()=>go(id)}>{label}</span>
+          ))}
+          <button className="btn-amber" onClick={()=>go('contact')} style={{fontSize:13,padding:'8px 16px'}}>List Your Land</button>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function Hero(){
+  const [dismissed,setDismissed]=useState(false);
+  const [go,setGo]=useState(false);
+  useEffect(()=>{ setTimeout(()=>setGo(true),400); },[]);
+  const c1=useCounter(2100000,2500,go);
+  const c2=useCounter(977,2000,go);
+  const c3=useCounter(4,1500,go);
+  const c4=useCounter(30,1800,go);
+  const scroll=id=>document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  return(
+    <section id="hero" className="topo-bg" style={{minHeight:'100vh',display:'flex',flexDirection:'column',justifyContent:'center',padding:'100px 24px 60px'}}>
+      <div style={{maxWidth:1280,margin:'0 auto',width:'100%'}}>
+        <div style={{maxWidth:800}}>
+          <div className="badge badge-teal" style={{marginBottom:20,fontSize:12}}>🌍 Africa's Integrity Carbon Exchange</div>
+          <h1 style={{fontSize:'clamp(2.2rem,5vw,4rem)',fontWeight:600,lineHeight:1.1,marginBottom:22}}>
+            Africa's Carbon Wealth,<br/><em style={{color:'#C17F24'}}>On Community Terms</em>
+          </h1>
+          <p style={{fontSize:17,color:'rgba(245,239,224,0.72)',lineHeight:1.8,marginBottom:36,maxWidth:620}}>
+            LCLI connects verified community land projects in northern Kenya to global climate buyers — with indigenous consent at the center of every deal.
+          </p>
+          <div style={{display:'flex',gap:14,flexWrap:'wrap',marginBottom:52}}>
+            <button className="btn-amber" onClick={()=>scroll('projects')} style={{fontSize:15,padding:'13px 28px'}}>View Live Projects</button>
+            <button className="btn-outline" onClick={()=>scroll('estimator')} style={{fontSize:15,padding:'13px 28px'}}>Estimate Your Credits</button>
+          </div>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))',gap:18}}>
+            {[
+              [c1.toLocaleString()+'+','Hectares in Pipeline'],
+              ['$'+(c2/100).toFixed(2),'Avg. $/tonne Kenya'],
+              [c3,'Active Projects Listed'],
+              [c4+'+','Years Avg. Lifetime'],
+            ].map(([val,label],i)=>(
+              <div key={i} style={{borderLeft:'2px solid #C17F24',paddingLeft:16}}>
+                <div style={{fontFamily:'Cormorant Garamond',fontSize:'1.75rem',fontWeight:700}}>{val}</div>
+                <div style={{fontSize:11,color:'rgba(245,239,224,0.45)',letterSpacing:.4,textTransform:'uppercase',marginTop:2}}>{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {!dismissed&&(
+          <div style={{marginTop:44,background:'rgba(217,119,6,0.1)',border:'1px solid rgba(217,119,6,0.35)',borderRadius:10,padding:'14px 20px',display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:16,maxWidth:860}}>
+            <div style={{display:'flex',gap:12,alignItems:'flex-start'}}>
+              <span style={{fontSize:18}}>⚠️</span>
+              <div style={{fontSize:14,color:'rgba(245,239,224,0.8)'}}>
+                <span style={{fontWeight:600,color:'#fbbf24'}}>Market Alert: </span>
+                NKRCP suspended Jan 2025 following consent ruling. LCLI's community-consent verification protocol means our listed projects are unaffected.{' '}
+                <span style={{color:'#C17F24',textDecoration:'underline',cursor:'pointer'}} onClick={()=>scroll('projects')}>Read why this matters →</span>
+              </div>
+            </div>
+            <button onClick={()=>setDismissed(true)} style={{background:'none',border:'none',color:'rgba(245,239,224,0.4)',cursor:'pointer',fontSize:18,flexShrink:0}}>✕</button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function ProjectCard({p,onRequest}){
+  const susp=p.status==='suspended';
+  return(
+    <div className="card" style={{position:'relative',opacity:susp?.72:1,padding:24}}>
+      {susp&&(
+        <div className="suspended-overlay">
+          <div style={{textAlign:'center',padding:24}}>
+            <div style={{fontSize:32,marginBottom:10}}>⚠️</div>
+            <div style={{fontFamily:'Cormorant Garamond',fontSize:19,fontWeight:700,color:'#fbbf24',marginBottom:6}}>Not Available</div>
+            <div style={{fontSize:12,color:'rgba(245,239,224,0.65)',marginBottom:10}}>Under Verra Review — Consent Dispute</div>
+            <div style={{fontSize:11,color:'rgba(245,239,224,0.45)',maxWidth:210,lineHeight:1.6,margin:'0 auto'}}>{p.note}</div>
+          </div>
+        </div>
+      )}
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:14,gap:8}}>
+        <div>
+          <div style={{fontSize:10,color:'rgba(245,239,224,0.4)',letterSpacing:.4,textTransform:'uppercase',marginBottom:4}}>{p.dev}</div>
+          <h3 style={{fontFamily:'Cormorant Garamond',fontSize:'1.1rem',fontWeight:700,lineHeight:1.3,maxWidth:260}}>{p.name}</h3>
+        </div>
+        <span className={`badge ${susp?'badge-amber':'badge-green'}`} style={{flexShrink:0}}>{susp?'⚠️ Suspended':'✅ Active'}</span>
+      </div>
+      <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:12}}>
+        <span className="badge badge-gray" style={{fontSize:10}}>📍 {p.loc.split(',')[0]}</span>
+        <span className="badge badge-teal" style={{fontSize:10}}>{p.type}</span>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:12}}>
+        <div style={{background:'rgba(255,255,255,0.03)',borderRadius:6,padding:'9px 11px'}}>
+          <div style={{fontSize:10,color:'rgba(245,239,224,0.4)',textTransform:'uppercase'}}>Area</div>
+          <div style={{fontSize:13,fontWeight:600,marginTop:2}}>{p.area} ha</div>
+        </div>
+        <div style={{background:'rgba(255,255,255,0.03)',borderRadius:6,padding:'9px 11px'}}>
+          <div style={{fontSize:10,color:'rgba(245,239,224,0.4)',textTransform:'uppercase'}}>Price</div>
+          <div style={{fontSize:13,fontWeight:600,color:'#C17F24',marginTop:2}}>{p.price}</div>
+        </div>
+      </div>
+      {p.annual&&<div style={{fontSize:12,color:'rgba(245,239,224,0.55)',marginBottom:10}}>📊 {p.annual}</div>}
+      <div style={{marginBottom:12}}>
+        <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:'rgba(245,239,224,0.5)',marginBottom:5}}>
+          <span>Credits Available</span><span>{100-p.sold}% remaining</span>
+        </div>
+        <div className="progress-bar"><div className="progress-fill" style={{width:`${100-p.sold}%`}}/></div>
+      </div>
+      <div style={{fontSize:11,color:'rgba(245,239,224,0.5)',marginBottom:14,paddingTop:10,borderTop:'1px solid rgba(255,255,255,0.06)'}}>🤝 {p.community}</div>
+      <button className={susp?'btn-outline':'btn-amber'} disabled={susp} onClick={()=>!susp&&onRequest(p)}
+        style={{width:'100%',opacity:susp?.4:1,cursor:susp?'not-allowed':'pointer',position:'relative',zIndex:susp?0:1}}
+        title={susp?'Credits not available — under Verra review':undefined}>
+        {susp?'Not Available — Under Review':'Request Credits'}
+      </button>
+    </div>
+  );
+}
+
+function Projects(){
+  const [filter,setFilter]=useState('all');
+  const [modal,setModal]=useState(null);
+  const [form,setForm]=useState({name:'',org:'',email:'',volume:''});
+  const [toast,setToast]=useState(false);
+  const filters=[['all','All Projects'],['active','Active'],['review','Under Review'],['redd','REDD+'],['agroforestry','Agroforestry'],['soil','Soil Carbon']];
+  const visible=filter==='all'?PROJECTS:PROJECTS.filter(p=>p.tags.includes(filter));
+  const submit=()=>{setModal(null);setForm({name:'',org:'',email:'',volume:''});setToast(true);setTimeout(()=>setToast(false),4000);};
+  return(
+    <section id="projects" style={{padding:'80px 24px',background:'#1A1A1A'}}>
+      <div style={{maxWidth:1280,margin:'0 auto'}}>
+        <div className="badge badge-teal" style={{marginBottom:12}}>Live Marketplace</div>
+        <h2 style={{fontFamily:'Cormorant Garamond',fontSize:'clamp(1.8rem,3.5vw,2.8rem)',fontWeight:600,marginBottom:10}}>Live Project Listings</h2>
+        <p style={{color:'rgba(245,239,224,0.55)',fontSize:14,marginBottom:6,maxWidth:640,lineHeight:1.7}}>Verified community carbon projects with full provenance data.</p>
+        <p style={{fontSize:11,color:'rgba(245,239,224,0.3)',fontStyle:'italic',marginBottom:28,maxWidth:680,lineHeight:1.6}}>Projects listed are referenced from public Verra registry data for market intelligence purposes. LCLI has no affiliation with project developers unless explicitly stated. Credit availability subject to direct developer agreement.</p>
+        <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:32}}>
+          {filters.map(([k,l])=><button key={k} className={`filter-btn${filter===k?' active':''}`} onClick={()=>setFilter(k)}>{l}</button>)}
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(270px,1fr))',gap:20}}>
+          {visible.map(p=><ProjectCard key={p.id} p={p} onRequest={setModal}/>)}
+        </div>
+      </div>
+      {modal&&(
+        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&setModal(null)}>
+          <div className="modal">
+            <div style={{display:'flex',justifyContent:'space-between',marginBottom:20}}>
+              <h3 style={{fontFamily:'Cormorant Garamond',fontSize:'1.4rem'}}>Request Credits</h3>
+              <button onClick={()=>setModal(null)} style={{background:'none',border:'none',color:'rgba(245,239,224,0.5)',cursor:'pointer',fontSize:20}}>✕</button>
+            </div>
+            <div style={{background:'rgba(27,58,45,0.4)',borderRadius:8,padding:12,marginBottom:18,fontSize:13,color:'rgba(245,239,224,0.7)'}}>
+              <strong style={{color:'#C17F24'}}>{modal.name}</strong><br/>{modal.price} · {modal.type}
+            </div>
+            {[['Your Name','name','text'],['Organization','org','text'],['Email','email','email'],['Volume Needed (tonnes)','volume','number']].map(([l,k,t])=>(
+              <div key={k} style={{marginBottom:13}}>
+                <label style={{fontSize:11,color:'rgba(245,239,224,0.45)',display:'block',marginBottom:5}}>{l}</label>
+                <input type={t} value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})} placeholder={l}/>
+              </div>
+            ))}
+            <button className="btn-amber" style={{width:'100%',marginTop:6}} onClick={submit}>Submit Credit Request</button>
+          </div>
+        </div>
+      )}
+      {toast&&<div className="toast">✅ Request submitted! LCLI team will respond within 24 hours.</div>}
+    </section>
+  );
+}
+
+function Estimator(){
+  const [form,setForm]=useState({ha:'',land:'Savanna Grassland',use:'Open Grazing',years:20,town:'Laisamis, Marsabit County',consent:'Full FPIC documented'});
+  const [loading,setLoading]=useState(false);
+  const [result,setResult]=useState(null);
+  const [err,setErr]=useState(null);
+  const set=(k,v)=>setForm(f=>({...f,[k]:v}));
+  const score={'Full FPIC documented':95,'In progress':55,'Not started':20};
+  const run=async()=>{
+    if(!form.ha){setErr('Please enter your land size in hectares.');return;}
+    setErr(null);setLoading(true);setResult(null);
+    const msg=`Land: ${form.ha} hectares of ${form.land}. Current use: ${form.use}. Duration: ${form.years} years. Nearest town: ${form.town}. Consent status: ${form.consent}.`;
+    try{
+      const res=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},
+        body:JSON.stringify({
+          model:'claude-sonnet-4-20250514',max_tokens:1000,
+          system:`You are an expert carbon credit analyst specialising in Kenya and East African drylands. Real project benchmarks: NKRCP (1.9M ha grassland, VM0026, ~$9/t, 50Mt lifetime); Kasigau REDD+ (200,000 ha dryland forest, ~1.4Mt/yr, $14-18/t); Acorn Agroforestry (ex-post CRUs, €20-31/t, satellite verified); KACP SALM (22,000 ha, VM0017, 1.2Mt lifetime). Kenya avg VCM price $9.77/tonne; high-integrity community projects reach $18/t. FPIC is now legally required and premium-priced. Provide: (1) Estimated annual tCO₂e with methodology reasoning, (2) Total lifetime credits, (3) Revenue range USD low/high, (4) Best-fit standard and methodology code, (5) Integrity premium based on consent, (6) Time to first issuance, (7) Key risks. Be specific. Use ## for section headers.`,
+          messages:[{role:'user',content:msg}],
+        }),
+      });
+      const d=await res.json();
+      if(d.content&&d.content[0])setResult(d.content[0].text);
+      else setErr('No response received. Please try again.');
+    }catch(e){setErr('Connection error: '+e.message);}
+    setLoading(false);
+  };
+  return(
+    <section id="estimator" style={{padding:'80px 24px',background:'linear-gradient(180deg,#1A1A1A 0%,rgba(27,58,45,0.25) 100%)'}}>
+      <div style={{maxWidth:1280,margin:'0 auto'}}>
+        <div className="badge badge-amber" style={{marginBottom:12}}>AI-Powered</div>
+        <h2 style={{fontFamily:'Cormorant Garamond',fontSize:'clamp(1.8rem,3.5vw,2.8rem)',fontWeight:600,marginBottom:10}}>Estimate Your Land's Carbon Potential</h2>
+        <p style={{color:'rgba(245,239,224,0.55)',fontSize:14,marginBottom:36,maxWidth:600,lineHeight:1.7}}>Powered by AI trained on Kenya-specific carbon methodologies including VM0026 (grassland), VM0017 (SALM), and REDD+ baselines.</p>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:28}} className="grid-2">
+          <div className="card" style={{padding:28}}>
+            <h3 style={{fontFamily:'Cormorant Garamond',fontSize:'1.25rem',marginBottom:20}}>Land Parameters</h3>
+            <div style={{marginBottom:14}}>
+              <label style={{fontSize:11,color:'rgba(245,239,224,0.45)',display:'block',marginBottom:6}}>Land Size (hectares) *</label>
+              <input type="number" value={form.ha} onChange={e=>set('ha',e.target.value)} placeholder="e.g. 5000"/>
+            </div>
+            <div style={{marginBottom:14}}>
+              <label style={{fontSize:11,color:'rgba(245,239,224,0.45)',display:'block',marginBottom:6}}>Land Type</label>
+              <select value={form.land} onChange={e=>set('land',e.target.value)}>
+                {['Savanna Grassland','Dryland Acacia Forest','Agroforestry Farm','Wetland-Riparian','Mixed Rangeland'].map(o=><option key={o}>{o}</option>)}
+              </select>
+            </div>
+            <div style={{marginBottom:14}}>
+              <label style={{fontSize:11,color:'rgba(245,239,224,0.45)',display:'block',marginBottom:6}}>Current Land Use</label>
+              <select value={form.use} onChange={e=>set('use',e.target.value)}>
+                {['Open Grazing','Degraded','Community Conservancy','Smallholder Farm','Protected Area'].map(o=><option key={o}>{o}</option>)}
+              </select>
+            </div>
+            <div style={{marginBottom:14}}>
+              <label style={{fontSize:11,color:'rgba(245,239,224,0.45)',display:'block',marginBottom:6}}>Project Duration: <strong style={{color:'#C17F24'}}>{form.years} years</strong></label>
+              <input type="range" min={10} max={30} value={form.years} onChange={e=>set('years',+e.target.value)} style={{width:'100%',accentColor:'#C17F24'}}/>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:10,color:'rgba(245,239,224,0.3)',marginTop:3}}><span>10 yrs</span><span>30 yrs</span></div>
+            </div>
+            <div style={{marginBottom:14}}>
+              <label style={{fontSize:11,color:'rgba(245,239,224,0.45)',display:'block',marginBottom:6}}>Nearest Town</label>
+              <input type="text" value={form.town} onChange={e=>set('town',e.target.value)}/>
+            </div>
+            <div style={{marginBottom:20}}>
+              <label style={{fontSize:11,color:'rgba(245,239,224,0.45)',display:'block',marginBottom:10}}>Community Consent Status (FPIC)</label>
+              {['Full FPIC documented','In progress','Not started'].map(o=>(
+                <label key={o} style={{display:'flex',alignItems:'center',gap:10,marginBottom:8,cursor:'pointer'}}>
+                  <input type="radio" name="consent" checked={form.consent===o} onChange={()=>set('consent',o)} style={{accentColor:'#C17F24'}}/>
+                  <span style={{fontSize:13,color:form.consent===o?'#F5EFE0':'rgba(245,239,224,0.5)'}}>{o}</span>
+                </label>
+              ))}
+              <div style={{marginTop:10}}>
+                <div style={{display:'flex',justifyContent:'space-between',fontSize:11,marginBottom:5}}>
+                  <span style={{color:'rgba(245,239,224,0.45)'}}>Integrity Score</span>
+                  <span style={{color:'#C17F24',fontWeight:600}}>{score[form.consent]}%</span>
+                </div>
+                <div className="progress-bar"><div className="progress-fill" style={{width:`${score[form.consent]}%`}}/></div>
+              </div>
+            </div>
+            {err&&<div style={{background:'rgba(239,68,68,0.1)',border:'1px solid rgba(239,68,68,0.3)',borderRadius:6,padding:'10px 14px',fontSize:13,color:'#f87171',marginBottom:12}}>{err}</div>}
+            <button className="btn-amber" style={{width:'100%',padding:'13px',fontSize:15}} onClick={run} disabled={loading}>
+              {loading?<span>Analysing<span className="loading-dots"><span>.</span><span>.</span><span>.</span></span></span>:'⚡ Estimate with AI'}
+            </button>
+          </div>
+          <div>
+            {!result&&!loading&&(
+              <div style={{height:'100%',minHeight:300,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',textAlign:'center',border:'2px dashed rgba(193,127,36,0.2)',borderRadius:12,padding:40}}>
+                <div style={{fontSize:52,marginBottom:16}}>🌿</div>
+                <h3 style={{fontFamily:'Cormorant Garamond',fontSize:'1.4rem',color:'rgba(245,239,224,0.45)',marginBottom:8}}>Your estimate will appear here</h3>
+                <p style={{fontSize:13,color:'rgba(245,239,224,0.3)',lineHeight:1.7}}>Enter your land parameters and click "Estimate with AI" to receive a detailed carbon credit projection based on Kenya market benchmarks.</p>
+              </div>
+            )}
+            {loading&&(
+              <div style={{height:350,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',border:'1px solid rgba(193,127,36,0.15)',borderRadius:12}}>
+                <div style={{width:46,height:46,border:'3px solid rgba(193,127,36,0.2)',borderTop:'3px solid #C17F24',borderRadius:'50%',animation:'spin 1s linear infinite',marginBottom:18}}/>
+                <p style={{fontSize:14,color:'rgba(245,239,224,0.55)'}}>Analysing with Kenya carbon benchmarks...</p>
+              </div>
+            )}
+            {result&&(
+              <div>
+                <div style={{background:'linear-gradient(135deg,rgba(42,122,111,0.15),rgba(193,127,36,0.1))',border:'1px solid rgba(193,127,36,0.25)',borderRadius:10,padding:16,marginBottom:14}}>
+                  <div style={{fontSize:11,color:'#C17F24',fontWeight:600,letterSpacing:.4,textTransform:'uppercase',marginBottom:3}}>AI Carbon Assessment</div>
+                  <div style={{fontSize:11,color:'rgba(245,239,224,0.4)'}}>Based on Kenya VCM benchmarks & project comparables</div>
+                </div>
+                <div style={{background:'rgba(27,58,45,0.3)',border:'1px solid rgba(42,122,111,0.25)',borderRadius:10,padding:20,fontSize:13,lineHeight:1.85,color:'rgba(245,239,224,0.88)',maxHeight:480,overflowY:'auto'}}>
+                  {result.split('\n').map((line,i)=>{
+                    if(line.startsWith('##'))return<div key={i} style={{fontFamily:'Cormorant Garamond',color:'#C17F24',fontSize:'1.05rem',marginTop:14,marginBottom:3,fontWeight:700}}>{line.replace(/##\s*/,'')}</div>;
+                    if(line.startsWith('**')&&line.endsWith('**'))return<div key={i} style={{fontWeight:600,color:'#F5EFE0',marginTop:5}}>{line.replace(/\*\*/g,'')}</div>;
+                    return<div key={i} style={{marginBottom:line===''?8:0}}>{line}</div>;
+                  })}
+                </div>
+                <div style={{display:'flex',gap:10,marginTop:14}}>
+                  <button className="btn-amber" style={{flex:1}} onClick={()=>document.getElementById('contact')?.scrollIntoView({behavior:'smooth'})}>Talk to LCLI Team</button>
+                  <button className="btn-outline" style={{flex:1}} onClick={()=>navigator.clipboard?.writeText(result)}>Copy Estimate</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Dashboard(){
+  return(
+    <section id="dashboard" style={{padding:'80px 24px',background:'rgba(27,58,45,0.12)'}}>
+      <div style={{maxWidth:1280,margin:'0 auto'}}>
+        <div className="badge badge-teal" style={{marginBottom:12}}>Market Intelligence</div>
+        <h2 style={{fontFamily:'Cormorant Garamond',fontSize:'clamp(1.8rem,3.5vw,2.8rem)',fontWeight:600,marginBottom:10}}>Kenya Carbon Market Intelligence</h2>
+        <p style={{color:'rgba(245,239,224,0.55)',fontSize:14,marginBottom:36,lineHeight:1.7}}>Data sourced from Ecosystem Marketplace, Verra Registry, and Carbon Pulse.</p>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(175px,1fr))',gap:12,marginBottom:32}}>
+          {[
+            ['$9.77','Kenya Avg. $/tonne 2024','↑ from $7.37 in 2022'],
+            ['$18','High-Integrity Community Forest','with CCB certification'],
+            ['$29','Blue Carbon (Mangrove)','highest VCM premium'],
+            ['$15–25','CCP Cookstove Credits','demand-side verified'],
+            ['180M+','Global VCM Retirements 2024','tCO₂e total'],
+          ].map(([v,l,s],i)=>(
+            <div key={i} className="kpi-card">
+              <div style={{fontFamily:'Cormorant Garamond',fontSize:'1.75rem',fontWeight:700,color:'#C17F24'}}>{v}</div>
+              <div style={{fontSize:10,color:'rgba(245,239,224,0.45)',textTransform:'uppercase',letterSpacing:.4,margin:'4px 0'}}>{l}</div>
+              <div style={{fontSize:10,color:'#2A7A6F'}}>{s}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20}} className="grid-2">
+          <div className="card" style={{padding:22}}>
+            <h3 style={{fontFamily:'Cormorant Garamond',fontSize:'1.05rem',marginBottom:3}}>Kenya VCM Price Trend</h3>
+            <div style={{fontSize:11,color:'rgba(245,239,224,0.4)',marginBottom:14}}>$/tonne average — Jan–Dec 2024</div>
+            <ResponsiveContainer width="100%" height={190}>
+              <LineChart data={PRICE_DATA} margin={{top:5,right:8,left:-22,bottom:0}}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)"/>
+                <XAxis dataKey="m" tick={{fill:'rgba(245,239,224,0.4)',fontSize:10}} axisLine={false} tickLine={false}/>
+                <YAxis tick={{fill:'rgba(245,239,224,0.4)',fontSize:10}} domain={[6.5,10.5]} axisLine={false} tickLine={false}/>
+                <Tooltip contentStyle={{background:'#1a1a1a',border:'1px solid rgba(193,127,36,0.3)',borderRadius:8,fontSize:12}} labelStyle={{color:'#C17F24'}} itemStyle={{color:'#F5EFE0'}}/>
+                <Line type="monotone" dataKey="p" stroke="#C17F24" strokeWidth={2.5} dot={{fill:'#C17F24',r:3}} name="$/tonne"/>
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="card" style={{padding:22}}>
+            <h3 style={{fontFamily:'Cormorant Garamond',fontSize:'1.05rem',marginBottom:3}}>Credit Supply by Project Type</h3>
+            <div style={{fontSize:11,color:'rgba(245,239,224,0.4)',marginBottom:14}}>Thousands of tCO₂e · Kenya VCM</div>
+            <ResponsiveContainer width="100%" height={190}>
+              <BarChart data={SUPPLY_DATA} margin={{top:5,right:8,left:-22,bottom:0}}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false}/>
+                <XAxis dataKey="type" tick={{fill:'rgba(245,239,224,0.35)',fontSize:9}} axisLine={false} tickLine={false}/>
+                <YAxis tick={{fill:'rgba(245,239,224,0.4)',fontSize:10}} axisLine={false} tickLine={false} tickFormatter={v=>`${(v/1000).toFixed(0)}K`}/>
+                <Tooltip contentStyle={{background:'#1a1a1a',border:'1px solid rgba(193,127,36,0.3)',borderRadius:8,fontSize:12}} formatter={v=>[`${v.toLocaleString()} tCO₂e`,'Credits']}/>
+                <Bar dataKey="credits" fill="#2A7A6F" radius={[4,4,0,0]}/>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20}} className="grid-2">
+          <div className="card" style={{padding:22}}>
+            <h3 style={{fontFamily:'Cormorant Garamond',fontSize:'1.05rem',marginBottom:3}}>Corporate Buyer Industry</h3>
+            <div style={{fontSize:11,color:'rgba(245,239,224,0.4)',marginBottom:12}}>By retirement volume 2022–2024</div>
+            <div style={{display:'flex',alignItems:'center',gap:16}}>
+              <ResponsiveContainer width="50%" height={155}>
+                <PieChart>
+                  <Pie data={BUYER_PIE} cx="50%" cy="50%" innerRadius={42} outerRadius={68} dataKey="value" paddingAngle={2}>
+                    {BUYER_PIE.map((e,i)=><Cell key={i} fill={e.color}/>)}
+                  </Pie>
+                  <Tooltip contentStyle={{background:'#1a1a1a',border:'1px solid rgba(193,127,36,0.3)',borderRadius:8,fontSize:12}}/>
+                </PieChart>
+              </ResponsiveContainer>
+              <div style={{flex:1}}>
+                {BUYER_PIE.map((d,i)=>(
+                  <div key={i} style={{display:'flex',alignItems:'center',gap:7,marginBottom:7}}>
+                    <div style={{width:9,height:9,borderRadius:2,background:d.color,flexShrink:0}}/>
+                    <span style={{fontSize:12,color:'rgba(245,239,224,0.65)',flex:1}}>{d.name}</span>
+                    <span style={{fontSize:12,fontWeight:600,color:'#C17F24'}}>{d.value}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="card" style={{padding:22}}>
+            <h3 style={{fontFamily:'Cormorant Garamond',fontSize:'1.05rem',marginBottom:3}}>Top Active Buyers</h3>
+            <div style={{fontSize:11,color:'rgba(245,239,224,0.4)',marginBottom:12}}>Kenya & East Africa VCM 2024</div>
+            <table>
+              <thead><tr><th>Buyer</th><th>Type</th><th>Price</th></tr></thead>
+              <tbody>{BUYERS.map((b,i)=>(
+                <tr key={i}>
+                  <td style={{fontWeight:600}}>{b.b}</td>
+                  <td style={{fontSize:11,color:'rgba(245,239,224,0.5)'}}>{b.t}</td>
+                  <td style={{color:'#C17F24',fontWeight:600,fontSize:12}}>{b.p}</td>
+                </tr>
+              ))}</tbody>
+            </table>
+          </div>
+        </div>
+        <div style={{background:'linear-gradient(135deg,rgba(42,122,111,0.15),rgba(193,127,36,0.1))',border:'1px solid rgba(193,127,36,0.25)',borderRadius:10,padding:20,display:'flex',gap:14,alignItems:'flex-start'}}>
+          <span style={{fontSize:22}}>⚡</span>
+          <div>
+            <div style={{fontFamily:'Cormorant Garamond',fontSize:'1.1rem',fontWeight:600,color:'#C17F24',marginBottom:5}}>Market Insight</div>
+            <p style={{fontSize:14,color:'rgba(245,239,224,0.8)',lineHeight:1.7}}>Credits with FPIC documentation and community co-benefits command up to <strong style={{color:'#F5EFE0'}}>78% price premium</strong> over generic voluntary credits. LCLI's consent-first protocol positions listed projects for premium pricing in an increasingly scrutinised market.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact(){
+  const [form,setForm]=useState({name:'',org:'',county:'',ha:'',land:'Savanna Grassland',email:'',consent:'Full FPIC documented'});
+  const [toast,setToast]=useState(false);
+  const set=(k,v)=>setForm(f=>({...f,[k]:v}));
+  const submit=()=>{setToast(true);setForm({name:'',org:'',county:'',ha:'',land:'Savanna Grassland',email:'',consent:'Full FPIC documented'});setTimeout(()=>setToast(false),5000);};
+  return(
+    <section id="contact" style={{padding:'80px 24px',background:'#1A1A1A'}}>
+      <div style={{maxWidth:1280,margin:'0 auto'}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:56,alignItems:'start'}} className="grid-2">
+          <div>
+            <div className="badge badge-amber" style={{marginBottom:16}}>List Your Project</div>
+            <h2 style={{fontFamily:'Cormorant Garamond',fontSize:'clamp(1.8rem,3.5vw,2.6rem)',fontWeight:600,lineHeight:1.2,marginBottom:14}}>
+              Is Your Community Land<br/><em style={{color:'#C17F24'}}>Carbon-Ready?</em>
+            </h2>
+            <p style={{color:'rgba(245,239,224,0.6)',fontSize:15,lineHeight:1.8,marginBottom:34}}>
+              LCLI provides free preliminary assessment for community land projects in northern Kenya. No upfront cost — we earn only on matched deals.
+            </p>
+            {[
+              ['💰','Zero upfront cost','Commission only on matched deals — we succeed when you do.'],
+              ['🛰️','AI-assisted MRV documentation','Automated monitoring, reporting & verification drafts included.'],
+              ['🤝','Full FPIC verification support','We handle consent documentation — protecting your community\'s rights.'],
+            ].map(([icon,title,sub],i)=>(
+              <div key={i} style={{display:'flex',gap:14,alignItems:'flex-start',padding:'13px 16px',background:'rgba(27,58,45,0.3)',borderRadius:8,border:'1px solid rgba(193,127,36,0.1)',marginBottom:12}}>
+                <span style={{fontSize:20,flexShrink:0}}>{icon}</span>
+                <div>
+                  <div style={{fontWeight:600,fontSize:14,marginBottom:3}}>{title}</div>
+                  <div style={{fontSize:13,color:'rgba(245,239,224,0.5)',lineHeight:1.5}}>{sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="card" style={{padding:28}}>
+            <h3 style={{fontFamily:'Cormorant Garamond',fontSize:'1.25rem',marginBottom:20}}>Free Project Assessment</h3>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
+              {[['Full Name','name','text'],['Organization','org','text'],['County','county','text'],['Land Size (ha)','ha','number']].map(([l,k,t])=>(
+                <div key={k}>
+                  <label style={{fontSize:11,color:'rgba(245,239,224,0.4)',display:'block',marginBottom:5}}>{l}</label>
+                  <input type={t} value={form[k]} onChange={e=>set(k,e.target.value)} placeholder={l}/>
+                </div>
+              ))}
+            </div>
+            <div style={{marginBottom:12}}>
+              <label style={{fontSize:11,color:'rgba(245,239,224,0.4)',display:'block',marginBottom:5}}>Land Type</label>
+              <select value={form.land} onChange={e=>set('land',e.target.value)}>
+                {['Savanna Grassland','Dryland Acacia Forest','Agroforestry Farm','Wetland-Riparian','Mixed Rangeland'].map(o=><option key={o}>{o}</option>)}
+              </select>
+            </div>
+            <div style={{marginBottom:12}}>
+              <label style={{fontSize:11,color:'rgba(245,239,224,0.4)',display:'block',marginBottom:5}}>Email Address</label>
+              <input type="email" value={form.email} onChange={e=>set('email',e.target.value)} placeholder="your@email.com"/>
+            </div>
+            <div style={{marginBottom:20}}>
+              <label style={{fontSize:11,color:'rgba(245,239,224,0.4)',display:'block',marginBottom:8}}>Consent Status</label>
+              {['Full FPIC documented','In progress','Not started'].map(o=>(
+                <label key={o} style={{display:'flex',gap:8,alignItems:'center',marginBottom:7,cursor:'pointer'}}>
+                  <input type="radio" name="ccons" checked={form.consent===o} onChange={()=>set('consent',o)} style={{accentColor:'#C17F24'}}/>
+                  <span style={{fontSize:13,color:'rgba(245,239,224,0.7)'}}>{o}</span>
+                </label>
+              ))}
+            </div>
+            <button className="btn-amber" style={{width:'100%',fontSize:15,padding:13}} onClick={submit}>Submit for Free Assessment</button>
+            <p style={{fontSize:11,color:'rgba(245,239,224,0.3)',textAlign:'center',marginTop:10}}>No upfront cost. LCLI responds within 48 hours.</p>
+          </div>
+        </div>
+      </div>
+      <div style={{borderTop:'1px solid rgba(245,239,224,0.07)',marginTop:72,paddingTop:28,textAlign:'center'}}>
+        <div style={{fontFamily:'Cormorant Garamond',fontSize:'1.1rem',color:'rgba(245,239,224,0.4)',marginBottom:4}}>LCLI Carbon Exchange</div>
+        <div style={{fontSize:12,color:'rgba(245,239,224,0.25)'}}>Laisamis, Marsabit County, Kenya · Community-first carbon brokerage since 2025</div>
+        <div style={{fontSize:11,color:'rgba(245,239,224,0.18)',marginTop:8,maxWidth:680,margin:'8px auto 0',lineHeight:1.6}}>Projects listed are referenced from public Verra registry data for market intelligence purposes. LCLI has no affiliation with project developers unless explicitly stated.</div>
+      </div>
+      {toast&&<div className="toast">✅ Assessment submitted! LCLI team will respond within 48 hours.</div>}
+    </section>
+  );
+}
+
+function App(){
+  return(
+    <div>
+      <Navbar/>
+      <Hero/>
+      <Projects/>
+      <Estimator/>
+      <Dashboard/>
+      <Contact/>
+    </div>
+  );
+}
+ReactDOM.render(<App/>,document.getElementById('root'));
+</script>
+</body>
+</html>
